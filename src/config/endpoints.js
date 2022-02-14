@@ -1,8 +1,10 @@
 const endpoints = {
   show: {
     list: 'shows',
-    getShowById: 'shows/{id}',
-    getShowListById: 'shows/{id}/seasons',
+    getShowById: 'shows/',
+    getShowListById: 'shows/',
+    getShowEpisodesListById: 'shows/',
+    getShowEpisodeById: 'shows/',
   },
 }
 export default endpoints;

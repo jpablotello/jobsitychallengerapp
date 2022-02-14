@@ -7,20 +7,9 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     flex: 1,
     justifyContent: 'flex-start',
-    paddingTop: 75,
-    paddingBottom: 75,
-    paddingHorizontal: 84,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
-  button: {
-    alignItems: 'center',
-    backgroundColor: color.chambray,
-    height: 40,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  buttonText: {
-    color: color.white,
-  }
 });
 
 export default styles;

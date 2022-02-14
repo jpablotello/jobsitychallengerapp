@@ -1,42 +1,67 @@
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getShowList } from 'jobsitychallengeapp/src/services';
-
+import { SHOW_SCREEN } from 'jobsitychallengeapp/src/constants/screens';
+import { clearShowsList, setShowsList, setCurrentShow, setCurrentShowEpisodes } from 'jobsitychallengeapp/src/redux/actions/shows.actions';
+import { getShowById, getShowList, getShowListEpisodesById } from 'jobsitychallengeapp/src/services';
+import CardItem from 'jobsitychallengeapp/src/components/CardItem';
 import styles from './styles';
-import { clearMoviesList, setMoviesList } from '../../redux/actions/movies.actions';
+import { orderEspisodesBySeason } from 'jobsitychallengeapp/src/utils/orderEpisodes';
 
-const ListScreen = () => {
-  const dispatch = useDispatch();
-	
-  const {moviesList} = useSelector(state => state.movies);
+const ListScreen = ({navigation}) => {
+	const dispatch = useDispatch();
+
+	const { showsList, currentShow } = useSelector(state => state.shows);
 
 	useEffect(() => {
 		const GetShows = async () => {
 			const response = await getShowList();
-			dispatch(setMoviesList(response));
+			dispatch(setShowsList(response));
 		}
-
 		GetShows();
 
 		return function cleanup() {
-			dispatch(clearMoviesList());
+			dispatch(clearShowsList());
 		}
 	}, []);
 
-	useEffect(() => {
-		if(moviesList?.length > 0) {
-			console.log('Movies updated');
-		} else {
-			console.log('Movies cleared');
+	const handleGoToShow = async (id) => {
+		const response = await getShowById(id);
+		if(response) {
+			dispatch(setCurrentShow(response))
+			const GetShowEpisodes = async () => {
+				const response = await getShowListEpisodesById(currentShow.id);
+				dispatch(setCurrentShowEpisodes(orderEspisodesBySeason(response)));
+				navigation.push(SHOW_SCREEN)
+			}
+	
+			GetShowEpisodes();
+	
 		}
-	}, [moviesList]);
+	}
 
 	return (
 		<View style={styles.container}>
-			<Text>ListScreen</Text>
-		</View>
+			<Text>Future Search Bar</Text>
+			{showsList?.length > 0 &&
+				<FlatList
+					data={showsList}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => (
+						<TouchableOpacity
+							onPress={() => handleGoToShow(item.id)}
+						>
+							<CardItem
+								key={item.id}
+								title={item.name}
+								imgUrl={item.image.medium}
+							/>
+						</TouchableOpacity>
+					)}
+				/>
+			}
+		</View >
 	)
 };
 

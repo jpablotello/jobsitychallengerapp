@@ -35,7 +35,6 @@ const genericGet = (
 ) => {
   return new Promise((resolve, reject) => {
     const config = token ? withToken(token, requestConfig) : { ...requestConfig };
-    console.log(REACT_APP_API_URL + '/' + url)
     return axiosDefaultConfig
       .get(REACT_APP_API_URL + '/' + url, config)
       .then(response => {
