@@ -1,8 +1,19 @@
-import { CLEAR_CURRENT_SHOW, CLEAR_SHOWS_LIST, SET_CURRENT_SHOW, SET_SHOWS_LIST, SET_CURRENT_SHOW_EPISODES, SET_CURRENT_EPISODE, CLEAR_CURRENT_EPISODE } from "../types";
+import {
+	CLEAR_CURRENT_SHOW,
+	CLEAR_SHOWS_LIST,
+	SET_CURRENT_SHOW,
+	SET_SHOWS_LIST,
+	SET_CURRENT_SHOW_EPISODES,
+	SET_CURRENT_EPISODE,
+	CLEAR_CURRENT_EPISODE,
+	SET_SEARCH_SHOWS_LIST,
+	CLEAR_SEARCH_SHOWS_LIST
+} from "../types";
 
 
 const initialState = {
 	showsList: [],
+	showsSearchResult: [],
 	currentShow: {
 		id: 0,
 		url: "",
@@ -88,18 +99,26 @@ export function showsReducers(state = initialState, action) {
 				...state,
 				currentShow: initialState.currentShow,
 			};
-
 		case SET_CURRENT_EPISODE:
 			return {
 				...state,
-				currentShow: action.payload,
+				currentEpisode: action.payload,
 			};
 		case CLEAR_CURRENT_EPISODE:
 			return {
 				...state,
 				currentEpisode: initialState.currentEpisode,
 			};
-
+		case SET_SEARCH_SHOWS_LIST:
+			return {
+				...state,
+				showsSearchResult: action.payload,
+			};
+		case CLEAR_SEARCH_SHOWS_LIST:
+			return {
+				...state,
+				showsSearchResult: [],
+			};
 		default:
 			return state;
 	}

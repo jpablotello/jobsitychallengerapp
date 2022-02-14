@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '800',
-    marginVertical: 15,
+    marginVertical: 25,
   },
   image: {
     width: '100%',
@@ -36,17 +36,26 @@ const styles = StyleSheet.create({
   genresText: {
     fontSize: 18,
   },
+  summaryContainer: {
+    marginTop: 20,
+  },
+  summaryText: {
+    fontSize: 18,
+  },
   episodesContainer: {
     alignItems: 'center',
-    marginTop: 20,
-    borderWidth: 1,
+    borderTopWidth: 1,
     width: '100%'
-
   },
   seasonTitle: {
     fontSize: 20,
     marginVertical: 10,
     width: '100%'
+  },
+  episodeTitle: {
+    fontSize: 20,
+    marginTop: 30,
+    textDecorationLine: 'underline'
   },
   episodeName: {
     fontSize: 16,

@@ -9,6 +9,15 @@ export const clearShowsList = () => ({
 	type: types.CLEAR_SHOWS_LIST,
 });
 
+export const setSearchShowsResult = (data) => ({
+	type: types.SET_SEARCH_SHOWS_LIST,
+	payload: data,
+});
+
+export const clearSearchShowsResult = () => ({
+	type: types.CLEAR_SEARCH_SHOWS_LIST,
+});
+
 export const setCurrentShow = (data) => ({
 	type: types.SET_CURRENT_SHOW,
 	payload: data
