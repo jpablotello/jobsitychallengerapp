@@ -1,22 +1,28 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Card } from "react-native-elements";
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
-const CardItem = ({ title, imgUrl }) => {
+const CardItem = ({ title, imgUrl, onPress, isLoading = false }) => {
 
 	return (
 		<View style={styles.container}>
-			<Card>
-				<Card.Title>{title}</Card.Title>
-				<Card.Divider />
-				{imgUrl != '' &&
-					<Card.Image
-						style={{ padding: 0 }}
-						source={{ uri: imgUrl }}
-					/>
-				}
-			</Card>
+			<TouchableOpacity
+				onPress={onPress}
+				disabled={isLoading}
+			>
+				<View style={styles.borderCard}>
+					<View style={styles.headerContainer}>
+						<Text style={styles.titleText}>{title}</Text>
+					</View>
+					<View style={styles.mainContainer}>
+						<Image
+							style={styles.image}
+							resizeMode="stretch"
+							source={{ uri: imgUrl }}
+						/>
+					</View>
+				</View>
+			</TouchableOpacity>
 		</View>
 	);
 }

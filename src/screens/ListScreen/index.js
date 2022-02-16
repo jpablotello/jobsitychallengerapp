@@ -1,26 +1,32 @@
-import React, { useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SHOW_SCREEN } from 'jobsitychallengeapp/src/constants/screens';
 import { clearShowsList, setShowsList, setCurrentShow, setCurrentShowEpisodes, clearCurrentShow } from 'jobsitychallengeapp/src/redux/actions/shows.actions';
 import { getShowById, getShowList, getShowListEpisodesById } from 'jobsitychallengeapp/src/services';
-import CardItem from 'jobsitychallengeapp/src/components/CardItem';
-import styles from './styles';
 import { orderEspisodesBySeason } from 'jobsitychallengeapp/src/utils/orderEpisodes';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from 'jobsitychallengeapp/src/components/SearchBar';
+import ResultViewer from 'jobsitychallengeapp/src/components/ResultViewer';
+import SkeletonFeed from 'jobsitychallengeapp/src/components/SkeletonFeed';
+import useLocalizer from 'jobsitychallengeapp/src/hooks/useLocalizer';
+import Separator from 'jobsitychallengeapp/src/components/Separator';
+import styles from './styles';
 
 const ListScreen = ({ navigation }) => {
+	const { t } = useLocalizer('SHOWLIST');
 	const dispatch = useDispatch();
-
 	const { showsList, currentShow, showsSearchResult } = useSelector(state => state.shows);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const GetShows = async () => {
 			const response = await getShowList();
 			dispatch(setShowsList(response));
+			setIsLoading(false)
 		}
 
+		setIsLoading(true);
 		dispatch(clearCurrentShow())
 		GetShows();
 
@@ -29,14 +35,28 @@ const ListScreen = ({ navigation }) => {
 		}
 	}, []);
 
+	const isSearchResults = showsSearchResult.length > 0;
+
+	const isFeedResults = showsList.length > 0 && showsSearchResult.length === 0;
+
 	const handleGoToShow = async (id) => {
+		if (isLoading) return;
+		setIsLoading(true);
 		const response = await getShowById(id);
 		if (response) {
 			dispatch(setCurrentShow(response))
-			const GetShowEpisodes = async () => {
-				const response = await getShowListEpisodesById(currentShow.id);
-				dispatch(setCurrentShowEpisodes(orderEspisodesBySeason(response)));
-				navigation.push(SHOW_SCREEN)
+			const GetShowEpisodes = () => {
+				getShowListEpisodesById(id)
+					.then((response) => {
+						dispatch(setCurrentShowEpisodes(orderEspisodesBySeason(response)));
+						navigation.push(SHOW_SCREEN)
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+					.finally(() => {
+						setIsLoading(false);
+					})
 			}
 
 			GetShowEpisodes();
@@ -47,39 +67,27 @@ const ListScreen = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<SearchBar />
-			<View style={{ borderWidth: 1, width: '100%' }}></View>
-			{showsSearchResult?.length > 0 && (
-				<FlatList
+			<Separator />
+			{isLoading &&
+				<>
+					<SkeletonFeed />
+					<SkeletonFeed />
+					<SkeletonFeed />
+				</>
+			}
+			{isSearchResults && !isLoading &&
+				<ResultViewer
 					data={showsSearchResult}
-					keyExtractor={(item) => item.id}
-					renderItem={({ item: {show} }) => (
-						<TouchableOpacity
-							onPress={() => handleGoToShow(show.id)}
-						>
-							<CardItem
-								key={show.id}
-								title={show.name}
-								imgUrl={show?.image ? show.image.medium : ''}
-							/>
-						</TouchableOpacity>
-					)}
+					handleGoTo={handleGoToShow}
+					isLoading={isLoading}
+					isSearchResult={true}
 				/>
-			)}
-			{showsList?.length > 0 && showsSearchResult?.length == 0 &&
-				<FlatList
+			}
+			{isFeedResults && !isLoading &&
+				<ResultViewer
 					data={showsList}
-					keyExtractor={(item) => item.id}
-					renderItem={({ item }) => (
-						<TouchableOpacity
-							onPress={() => handleGoToShow(item.id)}
-						>
-							<CardItem
-								key={item.id}
-								title={item.name}
-								imgUrl={item.image.medium}
-							/>
-						</TouchableOpacity>
-					)}
+					handleGoTo={handleGoToShow}
+					isLoading={isLoading}
 				/>
 			}
 		</View >

@@ -7,13 +7,16 @@ import {
 	SET_CURRENT_EPISODE,
 	CLEAR_CURRENT_EPISODE,
 	SET_SEARCH_SHOWS_LIST,
-	CLEAR_SEARCH_SHOWS_LIST
+	CLEAR_SEARCH_SHOWS_LIST,
+	ADD_SHOW_TO_FAVORITE,
+	REMOVE_SHOW_FROM_FAVORITE,
 } from "../types";
 
 
 const initialState = {
 	showsList: [],
 	showsSearchResult: [],
+	favShows: [],
 	currentShow: {
 		id: 0,
 		url: "",
@@ -118,6 +121,16 @@ export function showsReducers(state = initialState, action) {
 			return {
 				...state,
 				showsSearchResult: [],
+			};
+		case ADD_SHOW_TO_FAVORITE:
+			return {
+				...state,
+				favShows: [...state.favShows, action.payload],
+			};
+		case REMOVE_SHOW_FROM_FAVORITE:
+			return {
+				...state,
+				favShows: state.favShows.filter((item) => item.id != action.payload),
 			};
 		default:
 			return state;

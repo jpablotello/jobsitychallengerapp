@@ -40,3 +40,13 @@ export const setCurrentEpisode = (data) => ({
 export const clearCurrentEpisode = () => ({
 	type: types.CLEAR_CURRENT_EPISODE
 });
+
+export const addShowToFavorite = (show) => ({
+	type: types.ADD_SHOW_TO_FAVORITE,
+	payload: show
+});
+
+export const removeShowFromFavorite = (id) => ({
+	type: types.REMOVE_SHOW_FROM_FAVORITE,
+	payload: id
+});

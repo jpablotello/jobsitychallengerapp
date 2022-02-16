@@ -17,24 +17,25 @@ const styles = StyleSheet.create({
     marginVertical: 25,
   },
   image: {
-    width: '100%',
     height: 300,
+    width: '100%',
   },
   airDates: {
-    fontSize: 20,
-    marginTop: 20,
-    width: '100%',
     alignItems: 'center',
+    fontSize: 20,
+    marginVertical: 10,
+    width: '100%',
   },
   datesText: {
     fontSize: 18,
   },
   genresContainer: {
-    marginTop: 20,
     alignItems: 'center',
+    marginVertical: 10,
   },
   genresText: {
     fontSize: 18,
+    textAlign: 'center',
   },
   summaryContainer: {
     marginTop: 20,

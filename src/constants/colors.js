@@ -2,6 +2,8 @@ const color = {
   /* Whites and Blacks */
   white: '#FFFFFF',
   black: '#000000',
+  /*darks*/
+  balticSea: '#201C25',
   /* grays */
   gray: '#D1D1D2',
   lightGray: '#F8F8F8',
@@ -9,7 +11,7 @@ const color = {
   lightGray01: '#DCDCDC',
   darkGray: '#747479',
   lightGray02: '#EDEDED',
-  dustyGray: '#9C9C9C',
+  lightGray: '#9C9C9C',
   lightGray03: '#F6F6F6',
   lightGray04: '#E1F4EC',
   LimedSpruce: '#394249',

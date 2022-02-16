@@ -5,9 +5,12 @@ import { useDispatch } from 'react-redux';
 
 import InputText from 'jobsitychallengeapp/src/components/InputText';
 import {setShowsList, setSearchShowsResult, clearSearchShowsResult } from 'jobsitychallengeapp/src/redux/actions/shows.actions';
-import { getShowSearchList} from 'jobsitychallengeapp/src/services/showsService';
+import { getShowSearchList, getShowList} from 'jobsitychallengeapp/src/services/showsService';
+import useLocalizer from 'jobsitychallengeapp/src/hooks/useLocalizer';
+
 
 const SearchBar = () => {
+  const {t} = useLocalizer('SHOWLIST');
 	const dispatch = useDispatch();
 
   const [value, setValue] = useState("");
@@ -41,10 +44,10 @@ const SearchBar = () => {
       <InputText
         value={value}
         setValue={setValue}
-        label="Search"
+        label={t('search')}
       />
       <View style={{height: 30}}>
-        {value != '' && <Text>Result for: {value}</Text>}
+        {value != '' && <Text>{t('resultFor')}{value}</Text>}
       </View>
     </View>
   );

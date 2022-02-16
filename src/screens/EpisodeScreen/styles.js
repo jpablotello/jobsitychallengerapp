@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   image: {
-    width: '100%',
     height: 300,
+    width: '100%',
   },
   seasonContainer: {
     flexDirection: 'row',
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   },
   summaryContainer: {
     borderWidth: 1,
+    height: 200,
     width: '100%',
   },
   summaryText: {
